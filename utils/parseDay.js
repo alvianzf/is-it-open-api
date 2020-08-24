@@ -1,21 +1,13 @@
-// const parseDay = (raw, time) => {
-//     let dayList = [{day: "Mon", time}, {day: "Tue", time}, {day: "Wed", time}, {day: "Thu", time}, {day: "Fri", time}, {day: "Sat", time}, {day: "Sun", time}]
-
-//     switch (raw) {
-//         case "Mon-Sun": return dayList
-//                         break;
-//         case "Mon-Sat": return dayList.pop().pop()
-//                         break;
-//         case "Mon-Fri": return dayList.pop().pop()
-//                         break;
-//         case "Mon-Thu": return dayList.pop().pop().pop()
-//                         break;
-//         default: return {day: raw, time}
-//     }
-// }
-
 module.exports = {
-    parseDay: (raw, time) => {
+    parseDay: (raw, rawTime) => {
+
+        let _ = rawTime.split(" - ")
+
+        const min = changeToTime(_[0])
+        const max = changeToTime(_[1])
+        const time = {min, max}
+        // time = _
+
         let dayList = {
             Mon: time,
             Tue: time,
@@ -25,29 +17,46 @@ module.exports = {
             Sat: time,
             Sun: time,
         }
+
+        raw = raw.split("/")
     
-        switch (raw) {
+        switch (raw[0]) {
             case "Mon-Sun": return dayList
                             break;
             case "Mon-Sat": delete dayList.Sun
-                            return dayList
                             break;
             case "Mon-Fri": delete dayList.Sun
                             delete dayList.Sat
-                            return dayList
                             break;
             case "Mon-Thu": delete dayList.Sun
                             delete dayList.Sat
                             delete dayList.Fri
-                            return dayList
                             break;
             case "Fri-Sat": return {Fri: time, Sat: time}
                             break;
-            case "Mon-Thu/Sun": delete dayList.Sat
+            case "Mon-Thu": delete dayList.Sat
                             delete dayList.Fri
-                            return dayList
                             break;
-            default: return {day: raw, time}
+            default: dayList = {day: raw[0].substring(0, 3), time}
         }
+        // raw[1] != undefined && (dayList.raw[1].substring(0, 3) = time)
+        const additional = raw[1] !== undefined ? raw[1].substring(0, 3) : null
+
+        additional && (dayList.additional = time)
+        return dayList
     }
 } 
+
+const changeToTime = s => {
+    var d = new Date()
+    parts = s.match(/(\d+)\:(\d+) (\w+)/)
+    // !parts && console.log(s)
+    // parts.length === 2 && parts.push(":").push("00")
+    // console.log(parts, parts[0], parts[1], parts[2], parts[3])
+    // hours = /am/i.test(parts[3]) ? parseInt(parts[1], 10) : parseInt(parts[1], 10) + 12
+    // minutes = parseInt(parts[2], 10);
+
+    // d.setHours(hours, minutes,0,0);
+
+    return d
+}

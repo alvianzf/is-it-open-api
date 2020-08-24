@@ -22,6 +22,7 @@ router.get('/', function(req, res){
 
       for (var j = 0; j < time.length; j++) {
         const splitTime = time[j].replace(", ", "/").replace(" ", "^").split("^")
+        console.log({j: splitTime[1]})
         const datas = parseDay.parseDay(splitTime[0], splitTime[1])
         timeModified = {...timeModified, ...datas}
 
