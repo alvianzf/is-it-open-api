@@ -12,28 +12,57 @@ router.get('/', function(req, res){
       url: url,
       json: true
   }, function(error, response, body){
-     var data = []
-    var raw = body.replace(/"/g, "").split(/\n/g)
+      var data = []
+      var raw = body.replace(/"/g, "").split(/\n/g)
+      for (let i = 0; i < raw.length; i++) {
+        const tmp = raw[i].replace(",", "&&").split("&&")
+        const time = tmp[1].split(" / ")
 
-    for (var i = 0; i < raw.length; i++) {
-      const modified =raw[i].replace(",", "^").split("^")
-      const time = modified[1].split("  / ")
-      let timeModified = {}
+        let _ = []
+        let alternateEndTime;
+        let endTime;
+        let day;
 
-      for (var j = 0; j < time.length; j++) {
-        const splitTime = time[j].replace(", ", "/").replace(" ", "^").split("^")
-        console.log({j: splitTime[1]})
-        const datas = parseDay.parseDay(splitTime[0], splitTime[1])
-        timeModified = {...timeModified, ...datas}
+        for (var j = 0; j < time.length; j++) {
+          let startTime = parseDay.changeToTime(time[j])
+          let splitTime = time[j].split(startTime)
 
+          if (alternateEndTime = parseDay.changeToTime(splitTime[0])) {
+            day = splitTime[0].split(alternateEndTime)[0].trim()
+            
+            endTime = startTime
+            startTime = alternateEndTime
+          } else {
+            day = splitTime[0].trim()
+            endTime = splitTime[1].replace(" - ", "")
+          }
+          const days = parseDay.days(day)
+          const formatted = formatTime(days, startTime.trim(), endTime.trim())
+          _ = [..._, ...formatted]
+        }
+
+        data.push({name: tmp[0], time: _})
       }
-      data.push({name: modified[0], time: timeModified})
-    }
+
       if(!error && response.statusCode === 200){
           return res.status(200).json({message: "default raw data", success:true, data});
       }
   })
 });
 
+const formatTime = (day, start, end) => {
+  let _ = []
+  if (day.length === 3) {
+    _ = [..._, {day, start, end}]
+  } else {
+    for (var i = 0; i < day.length; i++) {
+        const __ = {day: day[i], start, end}
+        _ = [..._ , __]
+        console.log(_)
+    }
+  }
+
+  return _
+}
 
 module.exports = router;

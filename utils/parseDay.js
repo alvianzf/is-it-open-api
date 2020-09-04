@@ -1,62 +1,59 @@
+var moment = require("moment")
+
 module.exports = {
-    parseDay: (raw, rawTime) => {
-
-        let _ = rawTime.split(" - ")
-
-        const min = changeToTime(_[0])
-        const max = changeToTime(_[1])
-        const time = {min, max}
-        // time = _
-
-        let dayList = {
-            Mon: time,
-            Tue: time,
-            Wed: time,
-            Thu: time,
-            Fri: time,
-            Sat: time,
-            Sun: time,
-        }
-
-        raw = raw.split("/")
+    days: (raw) => {
+        if(/,/.test(raw)) {
+            let parsed = []
+            split = raw.split(", ")
+            for(var i = 0; i < split.length; i++) {
+                const _ = parseDay(split[i])
+                parsed = parsed.concat(_)
+            }
     
-        switch (raw[0]) {
-            case "Mon-Sun": return dayList
-                            break;
-            case "Mon-Sat": delete dayList.Sun
-                            break;
-            case "Mon-Fri": delete dayList.Sun
-                            delete dayList.Sat
-                            break;
-            case "Mon-Thu": delete dayList.Sun
-                            delete dayList.Sat
-                            delete dayList.Fri
-                            break;
-            case "Fri-Sat": return {Fri: time, Sat: time}
-                            break;
-            case "Mon-Thu": delete dayList.Sat
-                            delete dayList.Fri
-                            break;
-            default: dayList = {day: raw[0].substring(0, 3), time}
+            return parsed
+        } else if (/-/.test(raw)) {
+            return parseDay(raw)
         }
-        // raw[1] != undefined && (dayList.raw[1].substring(0, 3) = time)
-        const additional = raw[1] !== undefined ? raw[1].substring(0, 3) : null
 
-        additional && (dayList.additional = time)
-        return dayList
+        return raw.substring(0, 3)
+    },
+
+    changeToTime: s => {
+        var d = new Date()
+        parts = s.match(/(\d+):(\d+) (\w+)/)
+        parts1 = s.match(/(\d+) (\w+)/)
+    
+        return parts ? parts[0] : parts1 ? parts1[0] : false
+    },
+    
+}
+
+const parseDay = day => {
+    let days = fixDay(day)
+    switch (days) {
+        case "Mon-Sun" : return ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        case "Mon-Sat" : return ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        case "Mon-Fri" : return ["Mon", "Tue", "Wed", "Thu", "Fri"]
+        case "Mon-Thu" : return ["Mon", "Tue", "Wed", "Thu"]
+        case "Mon-Wed" : return ["Mon", "Tue", "Wed"]
+        case "Mon-Tue" : return ["Mon", "Tue"]
+        case "Tue-Fri" : return ["Tue", "Wed", "Thu", "Fri"]
+        case "Tue-Thu" : return ["Tue", "Wed", "Thu"]
+        case "Wed-Sun" : return ["Wed", "Thu", "Fri", "Sat", "Sun"]
+        case "Wed-Sat" : return ["Wed", "Thu", "Fri", "Sat"]
+        case "Wed-Fri" : return ["Wed", "Thu", "Fri"]
+        case "Wed-Thu" : return ["Wed", "Thu"]
+        case "Wed-Sat" : return ["Wed", "Thu", "Fri", "Sat"]
+        case "Thu-Sun" : return ["Thu", "Fri", "Sat", "Sun"]
+        case "Thu-Sat" : return ["Thu", "Fri", "Sat"]
+        case "Thu-Fri" : return ["Thu", "Fri"]
+        case "Fri-Sun" : return ["Fri", "Sat", "Sun"]
+        case "Fri-Sat" : return ["Fri", "Sat"]
+        case "Sat-Sun" : return ["Sat", "Sun"]
+        default: return [day.substring(0,3)]
     }
-} 
+}
 
-const changeToTime = s => {
-    var d = new Date()
-    parts = s.match(/(\d+)\:(\d+) (\w+)/)
-    // !parts && console.log(s)
-    // parts.length === 2 && parts.push(":").push("00")
-    // console.log(parts, parts[0], parts[1], parts[2], parts[3])
-    // hours = /am/i.test(parts[3]) ? parseInt(parts[1], 10) : parseInt(parts[1], 10) + 12
-    // minutes = parseInt(parts[2], 10);
-
-    // d.setHours(hours, minutes,0,0);
-
-    return d
+const fixDay = (raw) => {
+    return raw.replace("Tues", "Tue").replace("Weds", "Wed").replace("Thurs", "Thu").replace(/ /g, "")
 }
