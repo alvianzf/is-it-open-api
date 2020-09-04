@@ -3,7 +3,6 @@ var router = express.Router();
 var Restaurant = require('mongoose').model('Restaurant')
 
 router.get("/", (req, res) => {
-    var query = {};
     var limit = 20;
     var offset = 0;
 
@@ -22,6 +21,42 @@ router.get("/", (req, res) => {
                 .skip(Number(offset))
                 .exec(),
             Restaurant.count().exec()
+        ])
+    .then(results => {
+        const data = results[0]
+        const count = results[1]
+
+        return res.json({
+            message: "success",
+            data,
+            count,
+            data_shown: Number(limit),
+            offset: Number(offset)
+        })
+
+    }).catch(err => console.log(err))
+})
+
+router.get("/:name", (req, res) => {
+    var name = req.params.name
+    var limit = 20;
+    var offset = 0;
+
+    if (typeof req.query.limit !== undefined) {
+        limit = req.query.limit
+    }
+
+    if (typeof req.query.offset !== 'undefined'){
+        offset = req.query.offset;
+    }
+
+    Promise.all(
+        [
+            Restaurant.find({name: {$regex: '.*' + name + '.*'} })
+                .limit(Number(limit))
+                .skip(Number(offset))
+                .exec(),
+            Restaurant.find({name: {$regex: '.*' + name + '.*'} }).count().exec()
         ])
     .then(results => {
         const data = results[0]
