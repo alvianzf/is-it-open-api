@@ -5,8 +5,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors")
 var bodyParser = require("body-parser")
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var mongoose = require("mongoose")
+
+// Check if it's production
+var isProduction = process.env.NODE_ENV === 'production';
 
 var app = express();
 
@@ -19,9 +21,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+if(isProduction){
+  mongoose.connect(process.env.MONGODB_URI);
+} else {
+  mongoose.connect('mongodb://localhost/isitopen');
+  mongoose.set('debug', true);
+}
+
+// List of models
+require('./models/Restaurant')
+
+// Routes
+app.use(require('./routes'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
