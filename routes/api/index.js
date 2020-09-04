@@ -4,6 +4,7 @@ var Restaurant = mongoose.model('Restaurant');
 var seeder = require('mongoose-seeder');
 
 router.use('/seed', require('./seed'))
+router.use('/restaurant', require('./restaurant'))
 
 Restaurant.restaurantSeed()
 
