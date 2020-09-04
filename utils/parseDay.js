@@ -36,11 +36,12 @@ const parseDay = day => {
         _ = days.split("-")
         let size = list.indexOf(_[1]) - list.indexOf(_[0])
         let start = list.indexOf(_[0])
+
         if (size < 0) {
             size = size + 7
         }
+
         for (var i = 0; i <= size; i++) {
-            console.log(size, days)
             data = [...data, list[start]]
             start++;
         }

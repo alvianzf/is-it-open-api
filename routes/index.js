@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var request = require("request");
 var parseDay = require("../utils/parseDay")
+var seed = require("../utils/seeder")
 
 const url = "https://gist.githubusercontent.com/seahyc/7ee4da8a3fb75a13739bdf5549172b1f/raw/f1c3084250b1cb263198e433ae36ba8d7a0d9ea9/hours.csv"
 
@@ -49,6 +50,12 @@ router.get('/seed', function(req, res){
       }
   })
 });
+
+
+router.get('/', function(req, res){
+
+  return res.status(200).json({message: "default raw data", success:true, data: seed.data})
+})
 
 const formatTime = (day, start, end) => {
   let _ = []
