@@ -5,4 +5,6 @@ var seeder = require('mongoose-seeder');
 
 router.use('/seed', require('./seed'))
 
+Restaurant.restaurantSeed()
+
 module.exports = router;

@@ -1,6 +1,11 @@
 const mongoose = require("mongoose")
 const seeder = require("mongoose-seeder")
 var axios = require("axios")
+var parseDay = require("../utils/parseDay")
+var request = require("request");
+
+const url = "https://gist.githubusercontent.com/seahyc/7ee4da8a3fb75a13739bdf5549172b1f/raw/f1c3084250b1cb263198e433ae36ba8d7a0d9ea9/hours.csv"
+
 
 const RestaurantSchema =  new mongoose.Schema({
     // _id : { type: Number, unique: true, required: true},
@@ -13,13 +18,13 @@ const RestaurantSchema =  new mongoose.Schema({
 RestaurantSchema.statics.restaurantSeed = function() {
     let restaurants = this
 
-    restaurants.find({'_id':0}).then(res => {
+    restaurants.find().then(res => {
         if (!res.length > 0) {
-            axios.get("http://localhost:3000/api/seed").then(data=> {
-                restaurants.insertMany(data.data).then(docs=> {
+            axios.get("http://localhost:3001/api/seed/restaurant").then(data=> {
+                restaurants.insertMany(data.data.data).then(docs=> {
                     console.log(docs)
                 }).catch(err => console.log(err))
-            })
+            }).catch(error=> console.log(error))
         }
     })
 }
