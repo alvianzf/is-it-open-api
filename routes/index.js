@@ -5,8 +5,8 @@ var parseDay = require("../utils/parseDay")
 
 const url = "https://gist.githubusercontent.com/seahyc/7ee4da8a3fb75a13739bdf5549172b1f/raw/f1c3084250b1cb263198e433ae36ba8d7a0d9ea9/hours.csv"
 
-/* GET home page. */
-router.get('/', function(req, res){
+/* Parse the data to be seeded. */
+router.get('/seed', function(req, res){
   // res.setHeader('Content-Type', 'application/json');
   request({
       url: url,
@@ -58,7 +58,6 @@ const formatTime = (day, start, end) => {
     for (var i = 0; i < day.length; i++) {
         const __ = {day: day[i], start, end}
         _ = [..._ , __]
-        console.log(_)
     }
   }
 
