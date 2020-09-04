@@ -30,7 +30,9 @@ router.get("/", (req, res) => {
         return res.json({
             message: "success",
             data,
-            count
+            count,
+            data_shown: Number(limit),
+            offset: Number(offset)
         })
 
     }).catch(err => console.log(err))
