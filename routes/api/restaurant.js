@@ -104,31 +104,28 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
     var restaurant = new Restaurant(req.body)
 
-    return restaurant.save()
-        .then((err) => {
-            if(err) return res.json({success: false, message: "Save failed", err: err.message})
-            return res.json({success: true, message: "Restaurant saved", data: restaurant})
-        })
+    return restaurant.save((err, rest) => {
+        if(err) return res.json({success: false, message: "Save failed", err: err.message})
+            return res.json({success: true, message: "Restaurant saved", data: rest})
+    })
 })
 
 
 // Updates a new restaurant
 router.put("/:id", (req, res) => {
 
-    Restaurant.findByIdAndUpdate(req.params.id, req.body).exec()
-            .then((err) => {
-                if (err) return res.json({success: false, message: "Update failed", err: err.message})
+    Restaurant.findByIdAndUpdate(req.params.id, req.body, err => {
+        if (err) return res.json({success: false, message: "Update failed", err: err.message})
                 return res.json({success: true, message: "Restaurant Updated", data: req.body})
-            })
+    })
 })
 
 // Deletes a restaurant
 router.delete("/:id", (req, res) => {
-    Restaurant.findByIdAndRemove(req.params.id).exec()
-            .then((err) => {
-                if (err) return res.json({success: false, message: "Delete failed", err: err.message})
+    Restaurant.findByIdAndRemove(req.params.id, err => {
+        if (err) return res.json({success: false, message: "Delete failed", err: err.message})
                 return res.status(204).json({success: true, message: "Restaurant Deleted", data: deleted})
-            })
+    })
 })
 
 module.exports = router

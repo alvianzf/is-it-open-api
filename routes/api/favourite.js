@@ -103,10 +103,9 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
     var favourites = new Favourites(req.body)
 
-    return favourites.save()
-        .then((err) => {
-            if(err) return res.json({success: false, message: "Save failed", err: err.message})
-            return res.json({success: true, message: "List saved", data: favourites})
+    return favourites.save((err, fav) => {
+        if(err) return res.json({success: false, message: "Save failed", err: err.message})
+            return res.json({success: true, message: "List saved", data: fav})
         })
 })
 
@@ -114,20 +113,18 @@ router.post("/", (req, res) => {
 // Updates list
 router.put("/:id", (req, res) => {
 
-    Favourites.findByIdAndUpdate(req.params.id, req.body).exec()
-            .then((err) => {
-                if (err) return res.json({success: false, message: "Update failed", err: err.message})
+    Favourites.findByIdAndUpdate(req.params.id, req.body, err => {
+        if (err) return res.json({success: false, message: "Update failed", err: err.message})
                 return res.json({success: true, message: "List Updated", data: req.body})
-            })
+    })
 })
 
 // Deletes a favourites
 router.delete("/:id", (req, res) => {
-    Favourites.findByIdAndRemove(req.params.id).exec()
-            .then((err) => {
-                if (err) return res.json({success: false, message: "Delete failed", err: err.message})
-                return res.status(204).json({success: true, message: "Favourites Deleted", data: deleted})
-            })
+    Favourites.findByIdAndRemove(req.params.id, err => {
+        if (err) return res.json({success: false, message: "Delete failed", err: err.message})
+        return res.status(204).json({success: true, message: "Favourites Deleted", data: deleted})
+    })
 })
 
 module.exports = router
