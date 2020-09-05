@@ -105,8 +105,9 @@ router.post("/", (req, res) => {
     var restaurant = new Restaurant(req.body)
 
     return restaurant.save()
-        .then((rest) => {
-            return res.json({success: true, message: "Restaurant saved", data: rest})
+        .then((err) => {
+            if(err) return res.json({success: false, message: "Save failed", err: err.message})
+            return res.json({success: true, message: "Restaurant saved", data: restaurant})
         })
 })
 
@@ -115,15 +116,17 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res) => {
 
     Restaurant.findByIdAndUpdate(req.params.id, req.body).exec()
-            .then((updated) => {
-                return res.json({success: true, message: "Restaurant Updated", data: updated})
+            .then((err) => {
+                if (err) return res.json({success: false, message: "Update failed", err: err.message})
+                return res.json({success: true, message: "Restaurant Updated", data: req.body})
             })
 })
 
 // Deletes a restaurant
 router.delete("/:id", (req, res) => {
     Restaurant.findByIdAndRemove(req.params.id).exec()
-            .then((deleted) => {
+            .then((err) => {
+                if (err) return res.json({success: false, message: "Delete failed", err: err.message})
                 return res.status(204).json({success: true, message: "Restaurant Deleted", data: deleted})
             })
 })
