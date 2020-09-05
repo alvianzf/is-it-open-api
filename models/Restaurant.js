@@ -1,14 +1,8 @@
 const mongoose = require("mongoose")
-const seeder = require("mongoose-seeder")
 var axios = require("axios")
-var parseDay = require("../utils/parseDay")
-var request = require("request");
-const production  = 'http://';
+const production  = 'https://is-test-open.herokuapp.com/';
 const development = 'http://localhost:3001/';
 const env = (process.env.NODE_ENV ? production : development);
-
-const url = "https://gist.githubusercontent.com/seahyc/7ee4da8a3fb75a13739bdf5549172b1f/raw/f1c3084250b1cb263198e433ae36ba8d7a0d9ea9/hours.csv"
-
 
 const RestaurantSchema =  new mongoose.Schema({
     name: { type: String, required: true},
