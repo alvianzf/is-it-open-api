@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 var axios = require("axios")
-const production  = 'https://is-test-open.herokuapp.com/';
+const production  = 'https://be-todo.herokuapp.com/';
 const development = 'http://localhost:3001/';
 const env = (process.env.NODE_ENV ? production : development);
 
