@@ -40,7 +40,6 @@ router.get("/", (req, res) => {
 })
 
 
-
 // Search for restaurants by name
 router.get("/name/:name", (req, res) => {
     var name = req.params.name
@@ -98,6 +97,25 @@ router.get("/:id", (req, res) => {
         })
 
     }).catch(err => console.log(err))
+})
+
+
+// Post a new restaurant
+router.post("/", (req, res) => {
+    var restaurant = new Restaurant(req.body)
+
+    return restaurant.save()
+        .then((rest) => {
+            return res.json({success: true, message: "Restaurant saved", data: rest})
+        })
+})
+
+router.put("/:id", (req, res) => {
+
+    Restaurant.findByIdAndUpdate(req.params.id, req.body).exec()
+            .then((updated) => {
+                return res.json({success: true, message: "Restaurant Updated", data: updated})
+            })
 })
 
 
