@@ -11,7 +11,6 @@ const url = "https://gist.githubusercontent.com/seahyc/7ee4da8a3fb75a13739bdf554
 
 
 const RestaurantSchema =  new mongoose.Schema({
-    // _id : { type: Number, unique: true, required: true},
     name: { type: String, required: true},
     time: { type: Array, required: true},
 }, {timestamps: true})

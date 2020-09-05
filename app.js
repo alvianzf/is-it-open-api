@@ -32,6 +32,7 @@ if(isProduction){
 
 // List of models
 require('./models/Restaurant')
+require('./models/Favourites')
 
 // Routes
 app.use(require('./routes'))
