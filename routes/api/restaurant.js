@@ -110,6 +110,8 @@ router.post("/", (req, res) => {
         })
 })
 
+
+// Updates a new restaurant
 router.put("/:id", (req, res) => {
 
     Restaurant.findByIdAndUpdate(req.params.id, req.body).exec()
@@ -118,5 +120,12 @@ router.put("/:id", (req, res) => {
             })
 })
 
+// Deletes a restaurant
+router.delete("/:id", (req, res) => {
+    Restaurant.findByIdAndRemove(req.params.id).exec()
+            .then((deleted) => {
+                return res.status(204).json({success: true, message: "Restaurant Deleted", data: deleted})
+            })
+})
 
 module.exports = router
