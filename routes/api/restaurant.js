@@ -81,22 +81,10 @@ router.get("/name/:name", (req, res) => {
 // get single restaurant by id
 router.get("/:id", (req, res) => {
     const _id = req.params.id
-    Promise.all(
-        [
-            Restaurant.find({_id })
-                .exec(),
-        ])
-    .then(results => {
-        const data = results[0]
-        const count = 1
-
-        return res.json({
-            message: "success",
-            data,
-            count,
-        })
-
-    }).catch(err => console.log(err))
+    Restaurant.findById(_id, (err, rest) => {
+        if (err) return res.json({success: false, err: err.message})
+        return res.json({success: true, data: rest})
+    })
 })
 
 
@@ -122,9 +110,9 @@ router.put("/:id", (req, res) => {
 
 // Deletes a restaurant
 router.delete("/:id", (req, res) => {
-    Restaurant.findByIdAndRemove(req.params.id, err => {
+    Restaurant.findByIdAndRemove(req.params.id, (err, deleted) => {
         if (err) return res.json({success: false, message: "Delete failed", err: err.message})
-                return res.status(204).json({success: true, message: "Restaurant Deleted", data: deleted})
+        return res.json({success: true, message: "Restaurant Deleted"})
     })
 })
 

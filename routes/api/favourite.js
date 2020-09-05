@@ -80,22 +80,10 @@ router.get("/name/:name", (req, res) => {
 // get single Favourites by id
 router.get("/:id", (req, res) => {
     const _id = req.params.id
-    Promise.all(
-        [
-            Favourites.find({_id })
-                .exec(),
-        ])
-    .then(results => {
-        const data = results[0]
-        const count = 1
-
-        return res.json({
-            message: "success",
-            data,
-            count,
-        })
-
-    }).catch(err => console.log(err))
+    Favourites.findById(_id, (err, fav) => {
+        if (err) return res.json({success: false, err: err.message})
+        return res.json({success: true, data: fav})
+    })
 })
 
 
@@ -112,7 +100,6 @@ router.post("/", (req, res) => {
 
 // Updates list
 router.put("/:id", (req, res) => {
-
     Favourites.findByIdAndUpdate(req.params.id, req.body, err => {
         if (err) return res.json({success: false, message: "Update failed", err: err.message})
                 return res.json({success: true, message: "List Updated", data: req.body})
@@ -121,9 +108,9 @@ router.put("/:id", (req, res) => {
 
 // Deletes a favourites
 router.delete("/:id", (req, res) => {
-    Favourites.findByIdAndRemove(req.params.id, err => {
+    Favourites.findByIdAndDelete(req.params.id, err => {
         if (err) return res.json({success: false, message: "Delete failed", err: err.message})
-        return res.status(204).json({success: true, message: "Favourites Deleted", data: deleted})
+        return res.json({success: true, message: "Favourites Deleted",})
     })
 })
 
