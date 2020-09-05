@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var Restaurant = require('mongoose').model('Restaurant')
 
+
+// Get all restaurants
 router.get("/", (req, res) => {
     var limit = 20;
     var offset = 0;
@@ -37,7 +39,10 @@ router.get("/", (req, res) => {
     }).catch(err => console.log(err))
 })
 
-router.get("/:name", (req, res) => {
+
+
+// Search for restaurants by name
+router.get("/name/:name", (req, res) => {
     var name = req.params.name
     var limit = 20;
     var offset = 0;
@@ -72,5 +77,28 @@ router.get("/:name", (req, res) => {
 
     }).catch(err => console.log(err))
 })
+
+
+// get single restaurant by id
+router.get("/:id", (req, res) => {
+    const _id = req.params.id
+    Promise.all(
+        [
+            Restaurant.find({_id })
+                .exec(),
+        ])
+    .then(results => {
+        const data = results[0]
+        const count = 1
+
+        return res.json({
+            message: "success",
+            data,
+            count,
+        })
+
+    }).catch(err => console.log(err))
+})
+
 
 module.exports = router
