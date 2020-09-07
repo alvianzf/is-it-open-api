@@ -40,7 +40,7 @@ router.get('/restaurant', function(req, res){
           }
           const days = parseDay.days(day)
           const formatted = formatTime(days, parseDay.toSeconds(startTime), parseDay.toSeconds(endTime))
-          _ = [..._, formatted]
+          _ = [..._, ...formatted]
         }
 
         data.push({name: tmp[0], time: _})
@@ -62,12 +62,16 @@ router.get('/deleteseed', (req, res) => {
     return res.json({message: "deleted"})
   })
 })
+
+router.get('/once', (req, res) => {
+  if (Restaurant.restaurantSeed()) {
+    return res.json({message: 'seeded'})
+  }
+})
 const formatTime = (day, start, end) => {
   let _ = []
   if (day.length === 3) {
     _ = [..._, {day, start, end}]
-    // __ = {[day]: {start, end}}
-    // _ = {..._, ...__}
   } else {
     for (var i = 0; i < day.length; i++) {
         const __ = {day: day[i], start, end}

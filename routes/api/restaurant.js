@@ -90,12 +90,11 @@ router.get("/:id", (req, res) => {
 
 // Get restaurant by time open
 router.get("/time/:time", (req, res) => {
-    const time = req.params.id
+    const times = Number(req.params.time)
 
-    Restaurant.find({$and: [
-        time.$= {start: {$gte: time}}
-    ]}, (err, rest) => {
-        return res.json({rest})
+    Restaurant.find({}, (err, result) => {
+        if (err)  return res.json({err})
+        return res.json({result, err})
     })
 })
 
