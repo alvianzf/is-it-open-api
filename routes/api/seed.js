@@ -38,8 +38,8 @@ router.get('/restaurant', function(req, res){
             endTime = splitTime[1].replace(" - ", "")
           }
           const days = parseDay.days(day)
-          const formatted = formatTime(days, startTime.trim(), endTime.trim())
-          _ = [..._, ...formatted]
+          const formatted = formatTime(days, parseDay.toSeconds(startTime), parseDay.toSeconds(endTime))
+          _ = {..._, ...formatted}
         }
 
         data.push({name: tmp[0], time: _})
@@ -59,11 +59,13 @@ router.get('/', function(req, res){
 const formatTime = (day, start, end) => {
   let _ = []
   if (day.length === 3) {
-    _ = [..._, {day, start, end}]
+    // _ = [..._, {day, start, end}]
+    __ = {[day]: {start, end}}
+    _ = {..._, ...__}
   } else {
     for (var i = 0; i < day.length; i++) {
-        const __ = {day: day[i], start, end}
-        _ = [..._ , __]
+        const __ = {[day[i]]:{ start, end}}
+        _ = {..._ , ...__}
     }
   }
 
