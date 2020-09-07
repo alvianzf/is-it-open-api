@@ -91,8 +91,9 @@ router.get("/:id", (req, res) => {
 // Get restaurant by time open
 router.get("/time/:time", (req, res) => {
     const times = Number(req.params.time)
+    const day = req.query.day
 
-    Restaurant.find({}, (err, result) => {
+    Restaurant.find({time: {$elemMatch: {day: day, start: {$lte: times}, end: {$gte: times}}}}, (err, result) => {
         if (err)  return res.json({err})
         return res.json({result, err})
     })
