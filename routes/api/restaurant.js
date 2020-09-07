@@ -88,6 +88,18 @@ router.get("/:id", (req, res) => {
 })
 
 
+// Get restaurant by time open
+router.get("/time/:time", (req, res) => {
+    const time = req.params.id
+
+    Restaurant.find({$and: [
+        time.$= {start: {$gte: time}}
+    ]}, (err, rest) => {
+        return res.json({rest})
+    })
+})
+
+
 // Post a new restaurant
 router.post("/", (req, res) => {
     var restaurant = new Restaurant(req.body)
