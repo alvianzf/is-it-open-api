@@ -1,6 +1,8 @@
 # is-it-open-api
 
-This api auto seeds data from https://gist.githubusercontent.com/seahyc/7ee4da8a3fb75a13739bdf5549172b1f/raw/f1c3084250b1cb263198e433ae36ba8d7a0d9ea9/hours.csv
+This API auto seeds data from https://gist.githubusercontent.com/seahyc/7ee4da8a3fb75a13739bdf5549172b1f/raw/f1c3084250b1cb263198e433ae36ba8d7a0d9ea9/hours.csv
+
+> ### Base URL = https://be-todo.herokuapp.com/
 
 To clean the seeded collection, use
 > `/seed/deleteseed`
@@ -8,7 +10,6 @@ To clean the seeded collection, use
 To re-seed the collection, use
 > `/seed/once`  
   
-
 
 -----
 ## Restaurants
@@ -72,3 +73,44 @@ Time is in seconds, so need to convert hours and minutes to hours from a **24 Ho
 
 > queries available:  
 >  `/restaurant/:id`
+
+----
+## Favorites
+### Get all favourites
+`/favourites
+
+> queries available:  
+> limit= limits the return to a set number of data  
+> offset= offsets the data
+>  
+>  `/favourite?limit=${limit}&offset=${offset}`
+
+---
+### Get a favourite by id
+
+`/favourite/:id`
+
+> queries available:  
+> limit= limits the return to a set number of data  
+> offset= offsets the data
+>  
+>  `/favourite/:id?limit=${limit}&offset=${offset}`
+
+---
+---
+### Updates a favourite
+
+`/favourite/:id`
+
+> Body format:
+> `{ name: ${name}, list: [${restaurant_id}, ${restaurant_id}]`
+>  
+>  `/favourite/:id`
+
+---
+### Deletes a favourite 
+
+`/favourite/:id`
+
+> queries available:  
+>  `/favourite/:id`
