@@ -64,9 +64,7 @@ router.get('/deleteseed', (req, res) => {
 })
 
 router.get('/once', (req, res) => {
-  if (Restaurant.restaurantSeed()) {
-    return res.json({message: 'seeded'})
-  }
+  return res.json({success: true, data: Restaurant.restaurantSeed()})
 })
 const formatTime = (day, start, end) => {
   let _ = []
