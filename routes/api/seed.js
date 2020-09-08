@@ -70,12 +70,20 @@ router.get('/once', (req, res) => {
 })
 const formatTime = (day, start, end) => {
   let _ = []
-  if (day.length === 3) {
+  if (!Array.isArray(day) && day.length === 3) {
     _ = [..._, {day, start, end}]
   } else {
     for (var i = 0; i < day.length; i++) {
+      if (Array.isArray(day[i])) {
+        for (var j = 0; j < day[i]; j++) {
+
+        const __ = {day: day[i][j], start, end}
+        _ = [..._ , __]
+        }
+      } else {
         const __ = {day: day[i], start, end}
         _ = [..._ , __]
+      }
     }
   }
 
