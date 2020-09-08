@@ -77,7 +77,7 @@ Time is in seconds, so need to convert hours and minutes to hours from a **24 Ho
 ----
 ## Favourites
 ### Get all favourites
-`/favourites
+`/favourites`
 
 > queries available:  
 > limit= limits the return to a set number of data  
