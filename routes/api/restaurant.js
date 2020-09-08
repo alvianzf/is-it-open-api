@@ -72,7 +72,6 @@ router.get("/name/:name", (req, res) => {
             count,
             data_shown: Number(limit),
             offset: Number(offset),
-            err
         })
 
     }).catch(err => console.log(err))
