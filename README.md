@@ -12,7 +12,6 @@ To re-seed the collection, use
 
 -----
 ## Restaurants
------
 ### Get all restaurants
 `/restaurant`
 
@@ -52,7 +51,7 @@ To re-seed the collection, use
 > queries available:  
 > day= Day on a 3 letter format (Mon, Tue, Wed, Thu, Fri, Sat, Sun) 
 >  
->  `/restaurant/time/:time?day=${day}
+>  `/restaurant/time/:time?day=${day}`
 
 Time is in seconds, so need to convert hours and minutes to hours from a **24 Hour Format**
 
@@ -64,7 +63,7 @@ Time is in seconds, so need to convert hours and minutes to hours from a **24 Ho
 > Body format:
 > `{ name: ${name}, time: [{day: ${day}, start: ${start}, end: ${end}}]}`
 >  
->  `/restaurant/:id
+>  `/restaurant/:id`
 
 ---
 ### Deletes a restaurant 
@@ -72,4 +71,4 @@ Time is in seconds, so need to convert hours and minutes to hours from a **24 Ho
 `/restaurant/:id`
 
 > queries available:  
->  `/restaurant/:id
+>  `/restaurant/:id`
