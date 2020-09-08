@@ -71,7 +71,8 @@ router.get("/name/:name", (req, res) => {
             data,
             count,
             data_shown: Number(limit),
-            offset: Number(offset)
+            offset: Number(offset),
+            err
         })
 
     }).catch(err => console.log(err))
@@ -83,7 +84,7 @@ router.get("/:id", (req, res) => {
     const _id = req.params.id
     Restaurant.findById(_id, (err, rest) => {
         if (err) return res.json({success: false, err: err.message})
-        return res.json({success: true, data: rest})
+        return res.json({success: true, data: rest, err})
     })
 })
 
@@ -95,7 +96,7 @@ router.get("/time/:time", (req, res) => {
 
     Restaurant.find({time: {$elemMatch: {day: day, start: {$lte: times}, end: {$gte: times}}}}, (err, result) => {
         if (err)  return res.json({err})
-        return res.json({result, err})
+        return res.json({success: true, data: result, err})
     })
 })
 
@@ -106,7 +107,7 @@ router.post("/", (req, res) => {
 
     return restaurant.save((err, rest) => {
         if(err) return res.json({success: false, message: "Save failed", err: err.message})
-            return res.json({success: true, message: "Restaurant saved", data: rest})
+            return res.json({success: true, message: "Restaurant saved", data: rest, err})
     })
 })
 
@@ -116,7 +117,7 @@ router.put("/:id", (req, res) => {
 
     Restaurant.findByIdAndUpdate(req.params.id, req.body, err => {
         if (err) return res.json({success: false, message: "Update failed", err: err.message})
-                return res.json({success: true, message: "Restaurant Updated", data: req.body})
+                return res.json({success: true, message: "Restaurant Updated", data: req.body, err})
     })
 })
 
@@ -124,7 +125,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     Restaurant.findByIdAndRemove(req.params.id, (err, deleted) => {
         if (err) return res.json({success: false, message: "Delete failed", err: err.message})
-        return res.json({success: true, message: "Restaurant Deleted"})
+        return res.json({success: true, message: "Restaurant Deleted", err})
     })
 })
 
