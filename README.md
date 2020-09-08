@@ -75,7 +75,7 @@ Time is in seconds, so need to convert hours and minutes to hours from a **24 Ho
 >  `/restaurant/:id`
 
 ----
-## Favorites
+## Favourites
 ### Get all favourites
 `/favourites
 
