@@ -103,7 +103,7 @@ Time is in seconds, so need to convert hours and minutes to hours from a **24 Ho
 `/favourite/:id`
 
 > Body format:
-> `{ name: ${name}, list: [${restaurant_id}, ${restaurant_id}]`
+> `{ name: ${name}, restaurants: [${restaurant_id}, ${restaurant_id}]`
 >  
 >  `/favourite/:id`
 
