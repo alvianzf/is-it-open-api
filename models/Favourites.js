@@ -1,4 +1,5 @@
 const mongoose = require('mongoose'); // Erase if already required
+const Restaurant = mongoose.model("Restaurant")
 
 // Declare the Schema of the Mongo model
 var favouritesSchema = new mongoose.Schema({
@@ -8,9 +9,7 @@ var favouritesSchema = new mongoose.Schema({
         unique:true,
         index:true,
     },
-    list:{
-        type:Array,
-    },
+    restaurants:[{type: mongoose.Schema.Types.ObjectId, ref: Restaurant}],
 }, {timestamps: true});
 
 //Export the model

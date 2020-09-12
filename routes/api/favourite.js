@@ -20,6 +20,7 @@ router.get("/", (req, res) => {
             Favourites.find()
                 .limit(Number(limit))
                 .skip(Number(offset))
+                .populate("restaurants")
                 .exec(),
             Favourites.count().exec()
         ])
@@ -58,6 +59,7 @@ router.get("/name/:name", (req, res) => {
             Favourites.find({name: {$regex: '.*' + name + '.*'} })
                 .limit(Number(limit))
                 .skip(Number(offset))
+                .populate("restaurants")
                 .exec(),
             Favourites.find({name: {$regex: '.*' + name + '.*'} }).count().exec()
         ])
