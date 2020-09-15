@@ -91,12 +91,23 @@ router.get("/:id", (req, res) => {
 // Get restaurant by time open
 router.get("/time/:time", (req, res) => {
     const times = Number(req.params.time)
-    const day = req.query.day
+    let {day, page} = req.query
 
-    Restaurant.find({time: {$elemMatch: {day: day, start: {$lte: times}, end: {$gte: times}}}}, (err, result) => {
-        if (err)  return res.json({err})
-        return res.json({success: true, data: result, err})
-    })
+    page = page ? page : 1
+
+    // Restaurant.find({time: {$elemMatch: {day: day, start: {$gte: times}, end: {$lte: times}}}}, (err, result) => {
+    //     if (err)  return res.json({err})
+    //     return res.json({success: true, data: result, err})
+    // })
+
+    Promise.all([
+        Restaurant.find({time: {$elemMatch: {day: day, start: {$gte: times}, end: {$lte: times}}}}).limit(12).skip(12 * (page-1)).exec(),
+        Restaurant.find({time: {$elemMatch: {day: day, start: {$gte: times}, end: {$lte: times}}}}).count().exec()
+    ]).then(results => {
+        const data = results[0]
+        const count = results[1]
+        return res.json({data, page, total: 12, count})
+    }).catch(err => console.log(err))
 })
 
 
