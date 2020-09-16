@@ -51,8 +51,9 @@ To re-seed the collection, use
 
 > queries available:  
 > day= Day on a 3 letter format (Mon, Tue, Wed, Thu, Fri, Sat, Sun) 
+> page starts from 1
 >  
->  `/restaurant/time/:time?day=${day}`
+>  `/restaurant/time/:time?page=${page}&day=${day}`
 
 Time is in seconds, so need to convert hours and minutes to hours from a **24 Hour Format**
 
